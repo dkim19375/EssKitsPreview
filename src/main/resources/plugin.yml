@@ -1,0 +1,25 @@
+main: me.dkim19375.esskitspreview.ESSKitsPreview
+name: ESSKitsPreview
+version: ${pluginVersion}
+author: dkim19375
+api-version: 1.16
+depend:
+  - Essentials
+softdepend:
+  - PlaceholderAPI
+
+commands:
+  esskitspreview:
+    permission: esskitspreview.command
+    description: Main command
+    usage: /esskitspreview help
+    aliases:
+      - kitspreview
+
+permissions:
+  esskitspreview.command:
+    description: Run the command
+  esskitspreview.reload:
+    description: Reload the config file
+  esskitspreview.preview:
+    description: Preview a kit

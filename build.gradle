@@ -1,0 +1,104 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.21'
+    id 'net.minecrell.licenser' version '0.4.1'
+}
+
+group = 'me.dkim19375'
+version = '1.0.0'
+
+final basePackage = 'me.dkim19375.esskitspreview.libs'
+
+shadowJar {
+    relocate 'kotlin', "${basePackage}.kotlin"
+    relocate 'me.mattstudios.mfgui', "${basePackage}.mfgui"
+    relocate 'me.dkim19375.dkimcore', "${basePackage}.dkimcore"
+    relocate 'me.dkim19375.dkimbukkitcore', "${basePackage}.dkimbukkitcore"
+}
+
+repositories {
+    addRepositories project
+}
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:20.1.0'
+    compileOnly 'net.essentialsx:EssentialsX:2.19.0-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    implementation 'io.github.dkim19375:dkim-bukkit-core:3.1.4'
+    implementation 'me.mattstudios.utils:matt-framework-gui:2.0.3.3'
+}
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+//noinspection GroovyAssignabilityCheck
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+compileKotlin {
+    //noinspection GrUnresolvedAccess
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+license {
+    header = rootProject.file("LICENSE")
+    include "**/*.kt"
+}
+
+static def addRepositories(Project project) {
+    project.repositories {
+        mavenCentral()
+        maven { url = 'https://jitpack.io' }
+        maven { url = 'https://repo.alessiodp.com/releases/' }
+        maven { url = 'https://repo.essentialsx.net/releases/' }
+        maven { url = 'https://repo.essentialsx.net/snapshots/' }
+        maven { url = 'https://repo.mattstudios.me/artifactory/public' }
+        maven { url = 'https://repo.codemc.org/repository/maven-public/' }
+        maven { url = 'https://repo.dmulloy2.net/nexus/repository/public/' }
+        maven { url = 'https://repo.onarandombox.com/content/groups/public/' }
+        maven { url = 'https://nexus.hc.to/content/repositories/pub_releases/' }
+        maven { url = 'https://oss.sonatype.org/content/repositories/releases/' }
+        maven { url = 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url = 'https://s01.oss.sonatype.org/content/repositories/releases/' }
+        maven { url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        expand 'pluginVersion': version
+    }
+}
+
+task removeBuildJars() {
+    new File('build/libs').deleteDir()
+}
+
+task copyFile(type: Copy) {
+    if (!new File('../.TestServers/1.16/plugins/').exists()) {
+        return
+    }
+    new File('../.TestServers/1.16/plugins/' + project.name + '-' + project.version + '-all.jar').delete()
+    from('build/libs/' + project.name + '-' + project.version + '-all.jar')
+    into('../.TestServers/1.16/plugins')
+    include('*.jar')
+}
+
+task deleteAll() {
+    for (File file : new File('../.TestServers/1.16/plugins').listFiles()) {
+        if (file.name.startsWith(project.name)) {
+            file.delete()
+        }
+    }
+    for (File file : new File('../.TestServers/1.8/plugins').listFiles()) {
+        if (file.name.startsWith(project.name)) {
+            file.delete()
+        }
+    }
+}
+
+wrapper.dependsOn licenseFormat
