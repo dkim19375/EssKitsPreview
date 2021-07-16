@@ -5,7 +5,7 @@ A plugin to preview EssentialsX kits!
 and 1.12 and below _might_ work, but not sure**
 
 ## Building the plugin:
-Run these commands:
+Run these commands: (May differ on different operating systems!)
 ```bash
 git clone https://github.com/dkim19375/EssKitsPreview.git
 cd EssKitsPreview
