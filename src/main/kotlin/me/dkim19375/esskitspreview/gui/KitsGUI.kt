@@ -30,12 +30,13 @@ import com.earth2me.essentials.MetaItemStack
 import com.earth2me.essentials.textreader.IText
 import com.earth2me.essentials.textreader.KeywordReplacer
 import com.earth2me.essentials.textreader.SimpleTextInput
+import dev.triumphteam.gui.builder.item.ItemBuilder
+import dev.triumphteam.gui.guis.Gui
+import dev.triumphteam.gui.guis.GuiItem
 import me.dkim19375.dkimbukkitcore.function.color
 import me.dkim19375.dkimbukkitcore.function.formatAll
 import me.dkim19375.esskitspreview.ESSKitsPreview
-import me.mattstudios.mfgui.gui.components.util.ItemBuilder
-import me.mattstudios.mfgui.gui.guis.Gui
-import me.mattstudios.mfgui.gui.guis.GuiItem
+import me.dkim19375.esskitspreview.util.toComponent
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
@@ -53,7 +54,12 @@ class KitsGUI(private val player: Player, private val kit: Kit, private val plug
             }
             return@let it.color()
         }
-    private val menu = Gui(rows, title)
+    private val menu = Gui.gui()
+        .rows(rows)
+        .title(title.toComponent())
+        .disableAllInteractions()
+        .create()
+
     private val ess = plugin.essentials
 
     private fun reset() {
@@ -75,9 +81,7 @@ class KitsGUI(private val player: Player, private val kit: Kit, private val plug
 
     private fun addItems() {
         for (item in getKitItems()) {
-            menu.addItem(GuiItem(item) {
-                it.isCancelled = true
-            })
+            menu.addItem(GuiItem(item))
         }
     }
 
@@ -124,9 +128,9 @@ class KitsGUI(private val player: Player, private val kit: Kit, private val plug
 
     private fun getErrorItem(e: Exception): ItemStack {
         return ItemBuilder.from(Material.BARRIER)
-            .addItemFlags(*ItemFlag.values())
-            .setName("Error! Please report this to a server administrator")
-            .setLore(" ", "Error: ${e.localizedMessage}")
+            .flags(*ItemFlag.values())
+            .name("Error! Please report this to a server administrator".toComponent())
+            .lore(" ".toComponent(), "Error: ${e.localizedMessage}".toComponent())
             .build()
     }
 }

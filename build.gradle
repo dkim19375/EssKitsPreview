@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'me.dkim19375'
-version = '1.0.0'
+version = '1.0.1'
 
 final basePackage = 'me.dkim19375.esskitspreview.libs'
 
@@ -21,14 +21,15 @@ repositories {
 }
 
 dependencies {
+    compileOnly 'net.kyori:adventure-api:4.8.1'
     compileOnly 'org.jetbrains:annotations:20.1.0'
     compileOnly 'net.essentialsx:EssentialsX:2.19.0-SNAPSHOT'
     compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
-    implementation 'io.github.dkim19375:dkim-bukkit-core:3.1.4'
-    implementation 'me.mattstudios.utils:matt-framework-gui:2.0.3.3'
-}
+    compileOnly 'net.kyori:adventure-text-serializer-legacy:4.8.1'
 
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+    implementation 'dev.triumphteam:triumph-gui:3.0.3'
+    implementation 'io.github.dkim19375:dkim-bukkit-core:3.1.4'
+}
 
 //noinspection GroovyAssignabilityCheck
 tasks.withType(JavaCompile) {
