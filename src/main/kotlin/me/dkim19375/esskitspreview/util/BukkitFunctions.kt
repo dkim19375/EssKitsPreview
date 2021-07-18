@@ -24,17 +24,9 @@
 
 package me.dkim19375.esskitspreview.util
 
-import me.dkim19375.dkimbukkitcore.function.color
-import me.dkim19375.dkimbukkitcore.function.formatAll
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
-import org.bukkit.OfflinePlayer
+import org.bukkit.configuration.ConfigurationSection
 
-fun String.toComponent(): Component = LegacyComponentSerializer.legacySection().deserialize(this)
+fun ConfigurationSection.getIntOrNull(path: String): Int? = if (isSet(path) && isInt(path)) getInt(path) else null
 
-fun String.formatStr(altColorCode: Char = '&', player: OfflinePlayer? = null): String {
-    if (plugin.server.pluginManager.isPluginEnabled("PlaceholderAPI")) {
-        return formatAll(player)
-    }
-    return color(altColorCode)
-}
+fun ConfigurationSection.getStringListOrNull(path: String): List<String>? =
+    if (isSet(path) && isList(path)) getStringList(path) else null

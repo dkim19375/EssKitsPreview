@@ -62,3 +62,5 @@ private fun CommandSender.sendHelpMsgFormatted(label: String, message: HelpMessa
     }
     sendMessage("${ChatColor.AQUA}/$label ${message.arg} - ${ChatColor.GOLD}${message.description}")
 }
+
+fun CommandSender.sendMessage(message: ErrorType) = sendMessage("${ChatColor.RED}${message.description}")

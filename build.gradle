@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'me.dkim19375'
-version = '1.0.1'
+version = '1.1.0'
 
 final basePackage = 'me.dkim19375.esskitspreview.libs'
 
@@ -79,17 +79,24 @@ task removeBuildJars() {
     new File('build/libs').deleteDir()
 }
 
+final server = '1.17'
+
 task copyFile(type: Copy) {
-    if (!new File('../.TestServers/1.16/plugins/').exists()) {
+    if (!new File("../.TestServers/${server}/plugins/").exists()) {
         return
     }
-    new File('../.TestServers/1.16/plugins/' + project.name + '-' + project.version + '-all.jar').delete()
-    from('build/libs/' + project.name + '-' + project.version + '-all.jar')
-    into('../.TestServers/1.16/plugins')
-    include('*.jar')
+    new File("../.TestServers/${server}/plugins/${project.name}-${project.version}-all.jar").delete()
+    from("build/libs/${project.name}-${project.version}-all.jar")
+    into("../.TestServers/${server}/plugins")
+    include("*.jar")
 }
 
 task deleteAll() {
+    for (File file : new File('../.TestServers/1.17/plugins').listFiles()) {
+        if (file.name.startsWith(project.name)) {
+            file.delete()
+        }
+    }
     for (File file : new File('../.TestServers/1.16/plugins').listFiles()) {
         if (file.name.startsWith(project.name)) {
             file.delete()

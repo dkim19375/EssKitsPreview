@@ -30,6 +30,7 @@ import me.dkim19375.esskitspreview.ESSKitsPreview
 import me.dkim19375.esskitspreview.enumclass.ErrorType
 import me.dkim19375.esskitspreview.gui.KitsGUI
 import me.dkim19375.esskitspreview.util.sendHelpMessage
+import me.dkim19375.esskitspreview.util.sendMessage
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -38,6 +39,10 @@ import org.bukkit.entity.Player
 
 class KitsPreviewCmd(private val plugin: ESSKitsPreview) : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        if (!sender.hasPermission("esskitspreview.command")) {
+            sender.sendMessage(ErrorType.NO_PERMISSION)
+            return true
+        }
         if (args.isEmpty()) {
             sender.sendHelpMessage(label)
             return true
@@ -49,7 +54,7 @@ class KitsPreviewCmd(private val plugin: ESSKitsPreview) : CommandExecutor {
             }
             "reload" -> {
                 if (!sender.hasPermission("esskitspreview.reload")) {
-                    sender.sendMessage(ErrorType.NO_PERMISSION.description)
+                    sender.sendMessage(ErrorType.NO_PERMISSION)
                     return true
                 }
                 plugin.reloadConfig()
@@ -58,16 +63,16 @@ class KitsPreviewCmd(private val plugin: ESSKitsPreview) : CommandExecutor {
             }
             else -> {
                 if (!sender.hasPermission("esskitspreview.preview")) {
-                    sender.sendMessage(ErrorType.NO_PERMISSION.description)
+                    sender.sendMessage(ErrorType.NO_PERMISSION)
                     return true
                 }
                 val kit = getKit(args[0])
                 if (kit == null) {
-                    sender.sendMessage(ErrorType.UNKNOWN_KIT.description)
+                    sender.sendMessage(ErrorType.UNKNOWN_KIT)
                     return true
                 }
                 if (sender !is Player) {
-                    sender.sendMessage(ErrorType.MUST_BE_PLAYER.description)
+                    sender.sendMessage(ErrorType.MUST_BE_PLAYER)
                     return true
                 }
                 KitsGUI(sender, kit, plugin).showPlayer()

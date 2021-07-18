@@ -31,12 +31,19 @@ import com.earth2me.essentials.textreader.IText
 import com.earth2me.essentials.textreader.KeywordReplacer
 import com.earth2me.essentials.textreader.SimpleTextInput
 import dev.triumphteam.gui.builder.item.ItemBuilder
+import dev.triumphteam.gui.components.GuiType
 import dev.triumphteam.gui.guis.Gui
 import dev.triumphteam.gui.guis.GuiItem
 import me.dkim19375.dkimbukkitcore.function.color
 import me.dkim19375.dkimbukkitcore.function.formatAll
+import me.dkim19375.dkimbukkitcore.function.logInfo
+import me.dkim19375.dkimcore.extension.containsIgnoreCase
 import me.dkim19375.esskitspreview.ESSKitsPreview
+import me.dkim19375.esskitspreview.util.formatStr
+import me.dkim19375.esskitspreview.util.getIntOrNull
+import me.dkim19375.esskitspreview.util.getStringListOrNull
 import me.dkim19375.esskitspreview.util.toComponent
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
@@ -48,12 +55,7 @@ class KitsGUI(private val player: Player, private val kit: Kit, private val plug
     private val rows = plugin.config.getInt("gui.rows", 6)
     private val title = (plugin.config.getString("gui.title") ?: "&8Previewing Kit &8&l%kit%&8..")
         .replace("%kit%", kit.name)
-        .let {
-            if (plugin.server.pluginManager.isPluginEnabled("PlaceholderAPI")) {
-                return@let it.formatAll(player)
-            }
-            return@let it.color()
-        }
+        .formatStr()
     private val menu = Gui.gui()
         .rows(rows)
         .title(title.toComponent())
@@ -80,10 +82,46 @@ class KitsGUI(private val player: Player, private val kit: Kit, private val plug
     }
 
     private fun addItems() {
-        for (item in getKitItems()) {
-            menu.addItem(GuiItem(item))
+        val config = plugin.config
+        val closeSlot = config.getIntOrNull("close.slot")
+        val closeType = config.getString("close.type")?.let(Material::matchMaterial)
+        val closeName = config.getString("close.name")?.formatStr()
+        val closeLore = config.getStringListOrNull("close.lore")?.map(String::formatStr)
+        val backSlot = config.getIntOrNull("back.slot")
+        val backType = config.getString("back.type")?.let(Material::matchMaterial)
+        val backName = config.getString("back.name")?.formatStr()
+        val backLore = config.getStringListOrNull("back.lore")?.map(String::formatStr)
+        val command = config.getString("back.command")?.formatStr()
+        val kitItems = getKitItems().listIterator()
+        for (i in 0 until rows * 9) {
+            if (closeType != null && closeSlot == i) {
+                menu.setItem(i, GuiItem(getSpecialItem(closeType, closeName, closeLore)) {
+                    menu.close(player)
+                })
+                continue
+            }
+            if (backType != null && backSlot == i) {
+                menu.setItem(i, GuiItem(getSpecialItem(backType, backName, backLore)) {
+                    command?.let { Bukkit.dispatchCommand(player, it) }
+                })
+                continue
+            }
+            if (!kitItems.hasNext()) {
+                continue
+            }
+            menu.setItem(i, GuiItem(kitItems.next()))
         }
     }
+
+    private fun getSpecialItem(type: Material, name: String?, lore: List<String>?): ItemStack =
+        ItemBuilder.from(type).apply {
+            if (name != null) {
+                name(name.toComponent())
+            }
+            if (lore != null) {
+                lore(lore.map(String::toComponent))
+            }
+        }.build()
 
     private fun getKitItems(): List<ItemStack> {
         val user = ess.getUser(player)

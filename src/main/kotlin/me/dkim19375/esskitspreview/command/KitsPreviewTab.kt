@@ -54,6 +54,9 @@ class KitsPreviewTab(private val plugin: ESSKitsPreview) : TabCompleter {
         alias: String,
         args: Array<out String>
     ): List<String>? {
+        if (!sender.hasPermission("esskitspreview.command")) {
+            return null
+        }
         return when (args.size) {
             0 -> getBaseCommands(sender)
             1 -> getPartial(args[0], getBaseCommands(sender))

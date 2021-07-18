@@ -1,3 +1,20 @@
+# Supports PlaceholderAPI (If the plugin is installed) and color codes
+
 gui:
   rows: 6
   title: '&8Previewing Kit &8&l%kit%&8..'
+
+close:
+  slot: 53
+  type: BARRIER
+  name: '&cClose Menu'
+  lore:
+    - '&fClick here to close the menu!'
+
+back:
+  slot: 45
+  type: SPECTRAL_ARROW
+  name: '&6Back button'
+  lore:
+    - '&fClick here to the previous menu'
+  command: 'help'
