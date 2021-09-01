@@ -25,6 +25,7 @@
 package me.dkim19375.esskitspreview.util
 
 import me.dkim19375.dkimbukkitcore.data.HelpMessage
+import me.dkim19375.dkimbukkitcore.data.HelpMessageFormat
 import me.dkim19375.dkimbukkitcore.function.color
 import me.dkim19375.dkimbukkitcore.function.getMaxHelpPages
 import me.dkim19375.dkimbukkitcore.function.showHelpMessage
@@ -40,27 +41,15 @@ val commands = listOf(
     HelpMessage("<kit name>", "Display a kit", "esskitspreview.preview")
 )
 
-val plugin by lazy { JavaPlugin.getPlugin(ESSKitsPreview::class.java) }
+private val plugin by lazy { JavaPlugin.getPlugin(ESSKitsPreview::class.java) }
+private val format = HelpMessageFormat(
+    topBar = "&1----------------------------------------------".color(),
+    header = "&a%name% v%version".color(),
+    bottomBar = "&1----------------------------------------------".color()
+)
 
 fun CommandSender.sendHelpMessage(label: String, error: ErrorType? = null, page: Int = 1) {
-    sendMessage("&1----------------------------------------------".color())
-    sendMessage("&a${plugin.description.name} v${plugin.description.version}".color())
-    val newCommands = commands.filter { msg -> hasPermission(msg.permission) }
-    for (i in ((page - 1) * 7) until page * 7) {
-        val cmd = newCommands.getOrNull(i) ?: continue
-        sendHelpMsgFormatted(label, cmd)
-    }
-    error?.let {
-        sendMessage("${ChatColor.RED}${it.description}")
-    }
-    sendMessage("&1----------------------------------------------".color())
-}
-
-private fun CommandSender.sendHelpMsgFormatted(label: String, message: HelpMessage) {
-    if (!hasPermission(message.permission)) {
-        return
-    }
-    sendMessage("${ChatColor.AQUA}/$label ${message.arg} - ${ChatColor.GOLD}${message.description}")
+    showHelpMessage(label, error?.description, page, commands, plugin, format)
 }
 
 fun CommandSender.sendMessage(message: ErrorType) = sendMessage("${ChatColor.RED}${message.description}")

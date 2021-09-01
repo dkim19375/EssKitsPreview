@@ -26,9 +26,13 @@ package me.dkim19375.esskitspreview.util
 
 import me.dkim19375.dkimbukkitcore.function.color
 import me.dkim19375.dkimbukkitcore.function.formatAll
+import me.dkim19375.esskitspreview.ESSKitsPreview
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.OfflinePlayer
+import org.bukkit.plugin.java.JavaPlugin
+
+private val plugin by lazy { JavaPlugin.getPlugin(ESSKitsPreview::class.java) }
 
 fun String.toComponent(): Component = LegacyComponentSerializer.legacySection().deserialize(this)
 
