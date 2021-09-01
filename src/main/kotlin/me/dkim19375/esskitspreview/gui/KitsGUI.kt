@@ -31,13 +31,8 @@ import com.earth2me.essentials.textreader.IText
 import com.earth2me.essentials.textreader.KeywordReplacer
 import com.earth2me.essentials.textreader.SimpleTextInput
 import dev.triumphteam.gui.builder.item.ItemBuilder
-import dev.triumphteam.gui.components.GuiType
 import dev.triumphteam.gui.guis.Gui
 import dev.triumphteam.gui.guis.GuiItem
-import me.dkim19375.dkimbukkitcore.function.color
-import me.dkim19375.dkimbukkitcore.function.formatAll
-import me.dkim19375.dkimbukkitcore.function.logInfo
-import me.dkim19375.dkimcore.extension.containsIgnoreCase
 import me.dkim19375.esskitspreview.ESSKitsPreview
 import me.dkim19375.esskitspreview.util.formatStr
 import me.dkim19375.esskitspreview.util.getIntOrNull
@@ -96,12 +91,14 @@ class KitsGUI(private val player: Player, private val kit: Kit, private val plug
         for (i in 0 until rows * 9) {
             if (closeType != null && closeSlot == i) {
                 menu.setItem(i, GuiItem(getSpecialItem(closeType, closeName, closeLore)) {
+                    it.isCancelled = true
                     menu.close(player)
                 })
                 continue
             }
             if (backType != null && backSlot == i) {
                 menu.setItem(i, GuiItem(getSpecialItem(backType, backName, backLore)) {
+                    it.isCancelled = true
                     command?.let { Bukkit.dispatchCommand(player, it) }
                 })
                 continue
@@ -109,7 +106,9 @@ class KitsGUI(private val player: Player, private val kit: Kit, private val plug
             if (!kitItems.hasNext()) {
                 continue
             }
-            menu.setItem(i, GuiItem(kitItems.next()))
+            menu.setItem(i, GuiItem(kitItems.next()) {
+                it.isCancelled = true
+            })
         }
     }
 
