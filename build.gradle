@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'net.kyori:adventure-api:4.8.1'
+    compileOnly 'net.kyori:adventure-api:4.9.3'
     compileOnly 'org.jetbrains:annotations:22.0.0'
     compileOnly 'net.essentialsx:EssentialsX:2.19.0-SNAPSHOT'
     compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
