@@ -99,7 +99,7 @@ class KitsGUI(private val player: Player, private val kit: Kit, private val plug
             if (backType != null && backSlot == i) {
                 menu.setItem(i, GuiItem(getSpecialItem(backType, backName, backLore)) {
                     it.isCancelled = true
-                    command?.let { Bukkit.dispatchCommand(player, it) }
+                    command?.let { cmd -> Bukkit.dispatchCommand(player, cmd) }
                 })
                 continue
             }
