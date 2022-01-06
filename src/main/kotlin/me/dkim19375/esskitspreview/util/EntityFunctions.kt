@@ -24,11 +24,8 @@
 
 package me.dkim19375.esskitspreview.util
 
-import me.dkim19375.dkimbukkitcore.data.HelpMessage
-import me.dkim19375.dkimbukkitcore.data.HelpMessageFormat
-import me.dkim19375.dkimbukkitcore.function.color
-import me.dkim19375.dkimbukkitcore.function.getMaxHelpPages
-import me.dkim19375.dkimbukkitcore.function.showHelpMessage
+import me.dkim19375.dkimbukkitcore.data.*
+import me.dkim19375.dkimbukkitcore.function.*
 import me.dkim19375.esskitspreview.ESSKitsPreview
 import me.dkim19375.esskitspreview.enumclass.ErrorType
 import org.bukkit.ChatColor
@@ -44,7 +41,7 @@ val commands = listOf(
 private val plugin by lazy { JavaPlugin.getPlugin(ESSKitsPreview::class.java) }
 private val format = HelpMessageFormat(
     topBar = "&1----------------------------------------------".color(),
-    header = "&a%name% v%version".color(),
+    header = "&a%name% v%version%".color(),
     bottomBar = "&1----------------------------------------------".color()
 )
 

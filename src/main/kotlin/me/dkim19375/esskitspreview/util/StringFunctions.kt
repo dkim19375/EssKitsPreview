@@ -24,8 +24,7 @@
 
 package me.dkim19375.esskitspreview.util
 
-import me.dkim19375.dkimbukkitcore.function.color
-import me.dkim19375.dkimbukkitcore.function.formatAll
+import me.dkim19375.dkimbukkitcore.function.*
 import me.dkim19375.esskitspreview.ESSKitsPreview
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
