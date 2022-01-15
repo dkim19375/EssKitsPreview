@@ -66,13 +66,17 @@ class KitsPreviewCmd(private val plugin: ESSKitsPreview) : CommandExecutor {
                     sender.sendMessage(ErrorType.NO_PERMISSION)
                     return true
                 }
+                if (sender !is Player) {
+                    sender.sendMessage(ErrorType.MUST_BE_PLAYER)
+                    return true
+                }
                 val kit = getKit(args[0])
                 if (kit == null) {
                     sender.sendMessage(ErrorType.UNKNOWN_KIT)
                     return true
                 }
-                if (sender !is Player) {
-                    sender.sendMessage(ErrorType.MUST_BE_PLAYER)
+                if (!sender.hasPermission("esskitspreview.preview.${kit.name.lowercase()}")) {
+                    sender.sendMessage(ErrorType.NO_PERMISSION)
                     return true
                 }
                 KitsGUI(sender, kit, plugin).showPlayer()
