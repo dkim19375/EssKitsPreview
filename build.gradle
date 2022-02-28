@@ -29,7 +29,7 @@ dependencies {
     compileOnly 'org.jetbrains:annotations:23.0.0'
     compileOnly 'net.essentialsx:EssentialsX:2.19.2'
     compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
-    compileOnly 'net.kyori:adventure-text-serializer-legacy:4.9.3'
+    compileOnly 'net.kyori:adventure-text-serializer-legacy:4.10.0'
 
     implementation 'dev.triumphteam:triumph-gui:3.1.2'
     implementation 'io.github.dkim19375:dkim-bukkit-core:3.3.32'
