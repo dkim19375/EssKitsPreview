@@ -32,7 +32,7 @@ dependencies {
     compileOnly 'net.kyori:adventure-text-serializer-legacy:4.10.1'
 
     implementation 'dev.triumphteam:triumph-gui:3.1.2'
-    implementation 'io.github.dkim19375:dkim-bukkit-core:3.3.38'
+    implementation 'io.github.dkim19375:dkim-bukkit-core:3.3.39'
 }
 
 //noinspection GroovyAssignabilityCheck
